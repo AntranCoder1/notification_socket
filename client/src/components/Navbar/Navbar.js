@@ -1,27 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Navbar.css";
 import Notification from "../../img/icons8-notification.png";
 import Message from "../../img/message.svg";
 import Settings from "../../img/settings.svg";
 
-const Navbar = () => {
+const Navbar = ({ socket }) => {
 
     const [notifications, setNotifications] = useState([]);
     const [open, setOpen] = useState(false);
 
-    const displayNotification = ({ senderName, type }) => {
+    // useEffect(() => {
+    //     socket.on("getNotification", (data) => {
+    //         setNotifications((prev) => [...prev, data]);
+    //     })
+    // }, [socket]);
+    useEffect(() => {
+        socket.on("getText", (data) => {
+            setNotifications((prev) => [...prev, data]);
+        })
+    }, [socket]);
+
+    console.log(notifications)
+
+    const displayNotification = ({ senderName, text }) => {
         let action;
 
-        if (type === 1) {
-            action = "liked";
-        } else if (type === 2) {
-            action = "commented";
-        } else {
-            action = "shared";
-        }
+        // if (type === 1) {
+        //     action = "liked";
+        // } else if (type === 2) {
+        //     action = "commented";
+        // } else {
+        //     action = "shared";
+        // }
 
         return (
-            <span className="notification">{`${senderName} ${action} your post.`}</span>
+            // <span className="notification">{`${senderName} ${action} your post.`}</span>
+            <span className="notification">{`${senderName}: ${text}`}</span>
         )
     }
 
