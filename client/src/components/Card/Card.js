@@ -6,12 +6,22 @@ import Comment from "../../img/comment.svg";
 import Share from "../../img/share.svg";
 import Info from "../../img/info.svg";
 
-const Card = ({ post }) => {
+const Card = ({ post, socket, user }) => {
 
     const [liked, setLiked] = useState(false);
 
     const handleNotification = (type) => {
         type === 1 && setLiked(true);
+        // socket.emit("sendNotification", { 
+        //     senderName: user,
+        //     receiverName: post.username,
+        //     type, 
+        // })
+        socket.emit("sendText", { 
+            senderName: user,
+            receiverName: post.username,
+            text: "hello", 
+        })
     }
 
     return (
